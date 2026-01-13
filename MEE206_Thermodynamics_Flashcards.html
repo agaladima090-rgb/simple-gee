@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thermodynamics I - Flashcard System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        .category-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            border: 2px solid #3498db;
+            background: white;
+            color: #3498db;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .category-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #7f8c8d;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 500px;
+            height: 350px;
+            margin-bottom: 30px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+            background: white;
+        }
+
+        .card-front {
+            border: 2px solid #ecf0f1;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+        }
+
+        .card-label {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #95a5a6;
+        }
+
+        .card-back .card-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .card-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .card-front .card-content {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .card-back .card-content {
+            font-size: 1rem;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #ecf0f1;
+            color: #7f8c8d;
+        }
+
+        .nav-btn.prev:hover:not(:disabled) {
+            background: #bdc3c7;
+            color: #2c3e50;
+        }
+
+        .nav-btn.next {
+            background: #3498db;
+            color: white;
+        }
+
+        .nav-btn.next:hover:not(:disabled) {
+            background: #2980b9;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .flip-hint {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #95a5a6;
+        }
+
+        .stats {
+            margin-top: 40px;
+            display: flex;
+            gap: 30px;
+            padding: 20px 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #3498db;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #95a5a6;
+            margin-top: 5px;
+        }
+
+        .divider {
+            width: 1px;
+            background: #ecf0f1;
+        }
+
+        .instructions {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            max-width: 500px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            border-left: 4px solid #3498db;
+        }
+
+        @media (max-width: 600px) {
+            .flashcard-container {
+                height: 320px;
+            }
+
+            .card-content {
+                font-size: 1rem;
+            }
+
+            .formula {
+                font-size: 0.95rem;
+                padding: 10px 15px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+            }
+
+            .stats {
+                gap: 20px;
+                padding: 15px 25px;
+            }
+
+            .stat-value {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>MEE 206 - Thermodynamics I</h1>
+        <p>Flashcard Review System</p>
+    </header>
+
+    <div class="instructions">
+        Click any card to flip. Use navigation buttons to browse through the cards.
+    </div>
+
+    <nav class="category-nav" id="categoryNav"></nav>
+
+    <div class="progress-container">
+        <span id="progressText">1 / 50</span>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 2%"></div>
+        </div>
+    </div>
+
+    <div class="flashcard-container">
+        <div class="flashcard" id="flashcard" onclick="flipCard()">
+            <div class="card-face card-front">
+                <span class="card-label">Front</span>
+                <div class="card-content" id="cardFront"></div>
+            </div>
+            <div class="card-face card-back">
+                <span class="card-label">Back</span>
+                <div class="card-content" id="cardBack"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flip-hint">Click card to reveal answer</div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn prev" onclick="prevCard()" id="prevBtn">← Previous</button>
+        <button class="nav-btn next" onclick="nextCard()" id="nextBtn">Next →</button>
+    </div>
+
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-value" id="totalCards">50</div>
+            <div class="stat-label">Total Cards</div>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-item">
+            <div class="stat-value" id="currentCategory">All</div>
+            <div class="stat-label">Category</div>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-item">
+            <div class="stat-value" id="cardsViewed">0</div>
+            <div class="stat-label">Cards Viewed</div>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            // DEFINITIONS
+            {
+                category: "definitions",
+                front: "Define Thermodynamics.",
+                back: "Thermodynamics is the science that deals with energy transformations and the relationships between heat, work, and properties of systems. It is a macroscopic approach that focuses on the bulk behavior of matter without considering the molecular structure. Derived from Greek words 'therme' (heat) and 'dynamis' (power)."
+            },
+            {
+                category: "definitions",
+                front: "Define a thermodynamic system.",
+                back: "A system is a quantity of matter or a region in space chosen for study. The selection of system boundaries is crucial for thermodynamic analysis. The system should contain the phenomenon of interest, boundaries should be chosen to simplify analysis, and energy and mass interactions should be clearly identifiable."
+            },
+            {
+                category: "definitions",
+                front: "Define a closed system (control mass).",
+                back: "A closed system is a fixed amount of mass where no mass crosses the boundary, but energy can be transferred across the boundary. Mathematical representation: dm/dt = 0 (mass constant), dE/dt = Q̇ - Ẇ (energy can change). Examples: piston-cylinder assembly, sealed pressure cooker."
+            },
+            {
+                category: "definitions",
+                front: "Define an open system (control volume).",
+                back: "An open system is a region in space through which mass and energy can flow. The control volume has fixed boundaries in space. Mathematical representation: dm/dt = ṁin - ṁout, dE/dt = Q̇ - Ẇ + ṁinhin - ṁouthout. Examples: steam turbine, heat exchanger, centrifugal pump."
+            },
+            {
+                category: "definitions",
+                front: "Define an isolated system.",
+                back: "An isolated system is one where no mass or energy crosses the boundary. The system is completely isolated from its surroundings. Mathematical representation: dm/dt = 0 and dE/dt = 0. Total mass and energy remain constant. Represents the ultimate idealization. The universe as a whole is considered isolated."
+            },
+            {
+                category: "definitions",
+                front: "Define a property in thermodynamics.",
+                back: "A property is any characteristic of a system that can be measured or calculated and has a definite value when the system is in a given state. Properties are macroscopic characteristics that can be observed without knowledge of molecular structure. Properties are point functions whose values depend only on the state, not on the path taken."
+            },
+            {
+                category: "definitions",
+                front: "Define intensive property.",
+                back: "Intensive properties are independent of the mass or size of the system. These properties have the same value throughout a homogeneous system in equilibrium. If the system is divided into parts, intensive properties remain unchanged. Examples: temperature, pressure, density, specific volume, specific enthalpy."
+            },
+            {
+                category: "definitions",
+                front: "Define extensive property.",
+                back: "Extensive properties depend on the mass or size of the system. These properties are additive for subsystems. Mathematical characteristic: φ_extensive(total) = Σφ_extensive(parts). Examples: mass, volume, internal energy, enthalpy, entropy. Extensive properties can be converted to intensive properties by dividing by mass."
+            },
+            {
+                category: "definitions",
+                front: "Define pressure.",
+                back: "Pressure is the normal force exerted by a fluid per unit area, arising from molecular collisions with surfaces. Mathematical definition: P = lim(ΔA→0)(ΔF/ΔA) = dF/dA. Molecular interpretation: result of countless molecular collisions with container walls. Isotropic property (same in all directions) for fluids at rest."
+            },
+            {
+                category: "definitions",
+                front: "Define temperature.",
+                back: "Temperature is an intensive property that determines the direction of heat transfer and indicates the thermal energy level of a system. Molecular interpretation: measure of average kinetic energy of molecules. For monatomic ideal gas: (3/2)kT = average kinetic energy per molecule. Thermal equilibrium principle: no net heat transfer when temperatures are equal."
+            },
+            {
+                category: "definitions",
+                front: "Define heat.",
+                back: "Heat is energy transfer due to temperature difference between the system and surroundings. Characteristics: path function, inexact differential (δQ). Sign convention: positive when added to system. Mechanisms: conduction, convection, radiation. Not a property of the system."
+            },
+            {
+                category: "definitions",
+                front: "Define work.",
+                back: "Work is energy transfer due to force acting through distance. Characteristics: path function, inexact differential (δW). Sign convention: positive when done BY the system. Types: boundary work, shaft work, electrical work, flow work."
+            },
+            {
+                category: "definitions",
+                front: "Define internal energy.",
+                back: "Internal energy (U) is the total microscopic energy of a system. Components: kinetic energy + potential energy + chemical energy + nuclear energy of molecules. Properties: extensive property, state function, exact differential. Physical meaning: energy associated with molecular motion and intermolecular forces."
+            },
+            {
+                category: "definitions",
+                front: "Define entropy.",
+                back: "Entropy (S) is a measure of molecular disorder or energy distribution among molecules. Properties: extensive property, state function. Statistical interpretation: S = k ln Ω (Boltzmann equation). Applications: Second Law analysis, process direction, reversibility assessment."
+            },
+            {
+                category: "definitions",
+                front: "Define enthalpy.",
+                back: "Enthalpy (H) is defined as H = U + PV. Relationship: H = m × h (where h is specific enthalpy). Physical meaning: total energy including flow work. Applications: open system analysis, heating/cooling calculations. Convenient for flow processes because it includes flow work."
+            },
+            {
+                category: "definitions",
+                front: "Define reversible process.",
+                back: "A reversible process is one that can be reversed without leaving any change in the system or surroundings. Characteristics: quasi-static, frictionless, no finite temperature differences. Entropy change: ΔS = 0 for isolated system. Practical note: idealization for theoretical analysis."
+            },
+            {
+                category: "definitions",
+                front: "Define irreversible process.",
+                back: "Irreversible processes are real processes that cannot be exactly reversed. Characteristics: finite rates, friction, finite temperature differences. Entropy change: ΔS > 0 for isolated system. Examples: all real processes including friction, unrestrained expansion, heat transfer across finite temperature difference."
+            },
+            {
+                category: "definitions",
+                front: "Define absolute pressure.",
+                back: "Absolute pressure is pressure measured relative to perfect vacuum. Reference: zero absolute pressure (complete absence of matter). Characteristics: always positive, used in all thermodynamic calculations. Physical meaning: true thermodynamic pressure. Applications: gas laws, property tables, theoretical analysis."
+            },
+            {
+                category: "definitions",
+                front: "Define gauge pressure.",
+                back: "Gauge pressure is pressure measured relative to local atmospheric pressure. Mathematical relation: Pg = Pabs - Patm. Characteristics: can be positive (above atmospheric) or negative (below atmospheric). Practical use: most pressure measuring instruments read gauge pressure. Applications: tire pressure, boiler pressure, process control."
+            },
+            {
+                category: "definitions",
+                front: "What is the Zeroth Law of Thermodynamics?",
+                back: "If two bodies are in thermal equilibrium with a third body, they are in thermal equilibrium with each other. Mathematical representation: If TA = TC and TB = TC, then TA = TB. Establishes temperature as a state property and provides foundation for temperature measurement and thermometry."
+            },
+            {
+                category: "definitions",
+                front: "What is the First Law of Thermodynamics?",
+                back: "Energy cannot be created or destroyed, only converted from one form to another. For closed systems: ΔU = Q - W (change in internal energy equals heat added minus work done by system). Mathematical: dU = δQ - δW. Represents energy conservation principle."
+            },
+            {
+                category: "definitions",
+                front: "What is the Second Law of Thermodynamics (Clausius statement)?",
+                back: "Heat cannot flow spontaneously from a cold body to a hot body. Alternative Kelvin-Planck statement: It is impossible to construct a heat engine that operates in a cycle and produces no effect other than the extraction of heat from a reservoir and the performance of an equal amount of work."
+            },
+            {
+                category: "definitions",
+                front: "What is the Third Law of Thermodynamics?",
+                back: "The entropy of a perfect crystal approaches zero as temperature approaches absolute zero: lim(T→0) S = 0. Alternative statement: It is impossible to reach absolute zero temperature in a finite number of operations. Provides absolute reference point for entropy calculations."
+            },
+
+            // FORMULAS
+            {
+                category: "formulas",
+                front: "Write the relationship between absolute, gauge, and atmospheric pressure.",
+                back: "Pabs = Pg + Patm (when Pg > 0, pressure above atmospheric)<br><br>Pabs = Patm - Pvac (when Pabs < Patm, vacuum condition)"
+            },
+            {
+                category: "formulas",
+                front: "Write the temperature conversion formulas.",
+                back: "°F = (9/5)°C + 32 = 1.8°C + 32<br>°C = (5/9)(°F - 32) = (°F - 32)/1.8<br>K = °C + 273.15<br>°R = °F + 459.67<br>°R = 1.8 × K"
+            },
+            {
+                category: "formulas",
+                front: "Write the temperature difference conversion formulas.",
+                back: "ΔT(K) = ΔT(°C)<br>ΔT(°R) = ΔT(°F)<br>ΔT(°R) = 1.8 × ΔT(K)<br>ΔT(°F) = 1.8 × ΔT(°C)<br>Temperature differences are the same magnitude in Celsius and Kelvin scales."
+            },
+            {
+                category: "formulas",
+                front: "Write the First Law equation for closed systems.",
+                back: "Differential form: dU = δQ - δW<br>Integrated form: ΔU = Q - W<br>Rate form: dU/dt = Q̇ - Ẇ"
+            },
+            {
+                category: "formulas",
+                front: "Write the general energy equation for open systems (control volume).",
+                back: "dE/dt = Q̇ - Ẇ + ṁinhin - ṁouthout<br><br>For steady flow: Q̇ - Ẇ = ṁouthouthout - ṁinhin<br><br>Where h = u + Pv (enthalpy includes flow work)"
+            },
+            {
+                category: "formulas",
+                front: "Write the relationship between extensive and intensive properties.",
+                back: "V = v × m (Volume = Specific volume × Mass)<br>U = u × m (Internal energy = Specific internal energy × Mass)<br>H = h × m (Enthalpy = Specific enthalpy × Mass)<br>S = s × m (Entropy = Specific entropy × Mass)"
+            },
+            {
+                category: "formulas",
+                front: "Write the Clausius inequality for the Second Law.",
+                back: "∮(δQ/T) ≤ 0<br><br>For reversible processes: ∮(δQ/T) = 0<br>For irreversible processes: ∮(δQ/T) < 0"
+            },
+            {
+                category: "formulas",
+                front: "Write the entropy change formula for ideal gases.",
+                back: "Δs = cp ln(T2/T1) - R ln(P2/P1)<br><br>Or alternatively: Δs = cv ln(T2/T1) + R ln(v2/v1)<br><br>Where: cp = specific heat at constant pressure, cv = specific heat at constant volume, R = gas constant"
+            },
+            {
+                category: "formulas",
+                front: "Write the ideal gas law.",
+                back: "PV = mRT<br><br>Or in terms of density: P = ρRT<br><br>Where: P = pressure, V = volume, m = mass, R = specific gas constant, T = absolute temperature, ρ = density"
+            },
+            {
+                category: "formulas",
+                front: "Write the definition of specific enthalpy.",
+                back: "h = u + Pv<br><br>Where: h = specific enthalpy, u = specific internal energy, P = pressure, v = specific volume<br><br>H = mh (total enthalpy = mass × specific enthalpy)"
+            },
+            {
+                category: "formulas",
+                front: "Write the Carnot efficiency formula.",
+                back: "η_Carnot = 1 - (Tcold / Thot)<br><br>Where temperatures must be in absolute scale (K or °R)<br><br>Represents the maximum theoretical thermal efficiency for a heat engine operating between two reservoir temperatures."
+            },
+            {
+                category: "formulas",
+                front: "Write the hydrostatic pressure formula.",
+                back: "P = ρgh + P₀<br><br>Where: ρ = density, g = gravitational acceleration, h = height of fluid column, P₀ = reference pressure<br><br>For fluid columns: pressure increases with depth due to weight of fluid above."
+            },
+
+            // PRINCIPLES
+            {
+                category: "principles",
+                front: "State the thermal equilibrium principle.",
+                back: "Two systems in thermal contact will eventually reach the same temperature. Heat flows from higher to lower temperature. No net heat transfer when temperatures are equal. Forms the foundation for temperature measurement and thermometry."
+            },
+            {
+                category: "principles",
+                front: "State the conservation of mass principle for closed systems.",
+                back: "In a closed system, the mass remains constant. No mass crosses the system boundary. Mathematical representation: dm/dt = 0. Conservation of mass is automatically satisfied for closed systems. Focus is on energy interactions and property changes."
+            },
+            {
+                category: "principles",
+                front: "State the state postulate for simple compressible systems.",
+                back: "For simple compressible systems, two independent intensive properties determine the state. All other properties become dependent once the state is fixed. The number of independent intensive properties needed equals the number of relevant work modes plus one."
+            },
+            {
+                category: "principles",
+                front: "State the conditions for thermal equilibrium.",
+                back: "Condition: uniform temperature throughout system. Criterion: ∂T/∂x = 0 (no temperature gradient). Physical meaning: no net heat transfer within system. Time scale: usually achieved quickly due to rapid energy transfer."
+            },
+            {
+                category: "principles",
+                front: "State the conditions for mechanical equilibrium.",
+                back: "Condition: uniform pressure throughout system (for systems without external forces). Criterion: ∂P/∂x = 0 (no pressure gradient, except for gravitational effects). Physical meaning: no unbalanced forces, no acceleration. Time scale: achieved relatively quickly in fluids."
+            },
+            {
+                category: "principles",
+                front: "State the conditions for phase equilibrium.",
+                back: "Condition: no net mass transfer between phases. Criterion: chemical potential equal in all phases for each component. Applications: boiling, condensation, sublimation processes. Physical meaning: phase change rates are balanced."
+            },
+            {
+                category: "principles",
+                front: "State the entropy increase principle.",
+                back: "The entropy of an isolated system can never decrease; it can only increase (for irreversible processes) or remain constant (for reversible processes). Mathematical form: dS_isolated ≥ 0. Determines process feasibility and direction."
+            },
+            {
+                category: "principles",
+                front: "State the maximum work principle.",
+                back: "Reversible processes produce maximum work output or require minimum work input. Implication: sets upper limit on process efficiency. This principle is derived from the Second Law and applies to both heat engines and refrigerators."
+            },
+            {
+                category: "principles",
+                front: "State the relationship between absolute and relative temperature scales.",
+                back: "Kelvin scale: K = °C + 273.15. Absolute zero = 0 K = -273.15°C.<br>Rankine scale: °R = °F + 459.67. Absolute zero = 0 °R = -459.67°F.<br>Relationship: °R = 1.8 × K."
+            },
+            {
+                category: "principles",
+                front: "What is the relationship between pressure units?",
+                back: "1 bar = 100 kPa = 0.1 MPa<br>1 atm = 101.325 kPa = 1.01325 bar<br>1 psi = 6.895 kPa<br>1 mmHg = 133.3 Pa<br>Standard atmospheric pressure = 101.325 kPa = 1 atm = 760 mmHg"
+            },
+
+            // EXAM FAVORITES
+            {
+                category: "exam-favorites",
+                front: "What is the historical development sequence of thermodynamics?",
+                back: "1824: Sadi Carnot - Theoretical foundation of heat engines and maximum efficiency concepts<br>1840s: James Joule - Established mechanical equivalent of heat (4.186 J/cal)<br>1850: Rudolf Clausius - Formulated First Law and introduced internal energy concept<br>1851: William Thomson (Lord Kelvin) - Second Law formulation and absolute temperature scale<br>1865: Clausius - Introduced entropy concept and mathematical formulation of Second Law<br>1906: Walther Nernst - Third Law of Thermodynamics"
+            },
+            {
+                category: "exam-favorites",
+                front: "What are the types of system boundaries?",
+                back: "Fixed Boundary: does not move, volume constant, no boundary work.<br>Movable Boundary: can change position, system volume changes, boundary work performed.<br>Permeable Boundary: allows mass transfer, used in open systems.<br>Impermeable Boundary: no mass transfer, used in closed systems."
+            },
+            {
+                category: "exam-favorites",
+                front: "What are the types of equilibrium in thermodynamics?",
+                back: "Thermal Equilibrium: uniform temperature, no heat transfer within system.<br>Mechanical Equilibrium: uniform pressure, no unbalanced forces.<br>Chemical Equilibrium: no net chemical reactions, forward and reverse rates equal.<br>Phase Equilibrium: no net mass transfer between phases, chemical potential equal in all phases."
+            },
+            {
+                category: "exam-favorites",
+                front: "What are the key corollaries of the Zeroth Law?",
+                back: "1. Temperature Uniformity: In thermal equilibrium, temperature is uniform throughout.<br>2. Thermometer Principle: A thermometer can measure temperature by reaching thermal equilibrium.<br>3. Thermal Equilibrium State: Two systems in thermal contact eventually reach same temperature.<br>4. Temperature as Intensive Property: Independent of system size or mass."
+            },
+            {
+                category: "exam-favorites",
+                front: "What are the key corollaries of the First Law?",
+                back: "1. Energy Conservation Principle: Total energy of isolated system remains constant.<br>2. Internal Energy as State Function: Depends only on state, not on path (∮dU = 0).<br>3. Enthalpy Definition: H = U + PV, convenient for flow processes.<br>4. PMM1 Impossibility: No machine can produce work without energy input."
+            },
+            {
+                category: "exam-favorites",
+                front: "What are the key corollaries of the Second Law?",
+                back: "1. Entropy Increase Principle: dS_isolated ≥ 0.<br>2. Maximum Work Principle: Reversible processes produce maximum work.<br>3. Carnot Efficiency: η = 1 - Tcold/Thot (depends only on reservoir temperatures).<br>4. PMM2 Impossibility: No engine can convert heat completely to work in a cycle."
+            },
+            {
+                category: "exam-favorites",
+                front: "What are the key corollaries of the Third Law?",
+                back: "1. Unattainability of Absolute Zero: Cannot reach 0 K in finite number of steps.<br>2. Specific Heat Behavior: cp and cv approach zero as T → 0.<br>3. Thermal Expansion Coefficient: β approaches zero at absolute zero.<br>4. Nernst Heat Theorem: Entropy change for reactions approaches zero at T = 0."
+            },
+            {
+                category: "exam-favorites",
+                front: "What are the types of properties with examples?",
+                back: "INTENSIVE (independent of mass): Temperature (T), Pressure (P), Density (ρ), Specific volume (v), Specific enthalpy (h), Specific entropy (s).<br><br>EXTENSIVE (dependent on mass): Mass (m), Volume (V), Internal energy (U), Enthalpy (H), Entropy (S)."
+            },
+            {
+                category: "exam-favorites",
+                front: "What are the characteristics of quasi-static and quasi-equilibrium processes?",
+                back: "Quasi-Static: Conducted slowly enough that system remains close to equilibrium. Allows use of equilibrium property relations. Real processes approximate quasi-static behavior when conducted slowly.<br><br>Quasi-Equilibrium: System passes through series of equilibrium states. Properties can be defined at each instant. Reversible processes are quasi-equilibrium."
+            },
+            {
+                category: "exam-favorites",
+                front: "What are the practical applications of thermodynamic laws?",
+                back: "Power Plants: Carnot efficiency limitations, steam cycle optimization.<br>Refrigeration: Coefficient of performance limitations, heat pump theory.<br>Internal Combustion Engines: Theoretical vs. actual cycle analysis.<br>Jet Engines: Brayton cycle analysis, thrust optimization.<br>Chemical Processes: Gibbs free energy minimization, equilibrium constants.<br>Biological Systems: Metabolic efficiency, heat generation."
+            }
+        ];
+
+        // Group flashcards by category
+        const categories = {
+            "all": { name: "All Cards", icon: "📚" },
+            "definitions": { name: "Definitions", icon: "📖" },
+            "formulas": { name: "Formulas", icon: "🔢" },
+            "principles": { name: "Principles", icon: "⚗️" },
+            "exam-favorites": { name: "Exam Favorites", icon: "⭐" }
+        };
+
+        let currentCategory = "all";
+        let currentIndex = 0;
+        let viewedCards = new Set();
+
+        function initFlashcards() {
+            renderCategoryNav();
+            renderCurrentCard();
+            updateStats();
+        }
+
+        function renderCategoryNav() {
+            const nav = document.getElementById("categoryNav");
+            nav.innerHTML = "";
+            
+            Object.keys(categories).forEach(key => {
+                const btn = document.createElement("button");
+                btn.className = `category-btn ${key === currentCategory ? "active" : ""}`;
+                btn.innerHTML = `${categories[key].icon} ${categories[key].name}`;
+                btn.onclick = () => selectCategory(key);
+                nav.appendChild(btn);
+            });
+        }
+
+        function selectCategory(category) {
+            currentCategory = category;
+            currentIndex = 0;
+            renderCategoryNav();
+            renderCurrentCard();
+            updateStats();
+        }
+
+        function getFilteredCards() {
+            if (currentCategory === "all") {
+                return flashcards;
+            }
+            return flashcards.filter(card => card.category === currentCategory);
+        }
+
+        function renderCurrentCard() {
+            const filteredCards = getFilteredCards();
+            const card = filteredCards[currentIndex];
+            const flashcard = document.getElementById("flashcard");
+            
+            flashcard.classList.remove("flipped");
+            
+            document.getElementById("cardFront").innerHTML = card.front;
+            document.getElementById("cardBack").innerHTML = card.back;
+            
+            // Track viewed cards
+            viewedCards.add(card.front);
+            updateStats();
+        }
+
+        function flipCard() {
+            const flashcard = document.getElementById("flashcard");
+            flashcard.classList.toggle("flipped");
+        }
+
+        function nextCard() {
+            const filteredCards = getFilteredCards();
+            if (currentIndex < filteredCards.length - 1) {
+                currentIndex++;
+                renderCurrentCard();
+                updateNavButtons();
+                updateProgress();
+            }
+        }
+
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderCurrentCard();
+                updateNavButtons();
+                updateProgress();
+            }
+        }
+
+        function updateNavButtons() {
+            const filteredCards = getFilteredCards();
+            document.getElementById("prevBtn").disabled = currentIndex === 0;
+            document.getElementById("nextBtn").disabled = currentIndex === filteredCards.length - 1;
+        }
+
+        function updateProgress() {
+            const filteredCards = getFilteredCards();
+            document.getElementById("progressText").textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+            const percentage = ((currentIndex + 1) / filteredCards.length) * 100;
+            document.getElementById("progressFill").style.width = `${percentage}%`;
+        }
+
+        function updateStats() {
+            const filteredCards = getFilteredCards();
+            document.getElementById("totalCards").textContent = filteredCards.length;
+            document.getElementById("currentCategory").textContent = categories[currentCategory].name;
+            document.getElementById("cardsViewed").textContent = viewedCards.size;
+            updateNavButtons();
+            updateProgress();
+        }
+
+        // Keyboard navigation
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowRight" || e.key === " ") {
+                nextCard();
+            } else if (e.key === "ArrowLeft") {
+                prevCard();
+            } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                flipCard();
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener("DOMContentLoaded", initFlashcards);
+    </script>
+</body>
+</html>

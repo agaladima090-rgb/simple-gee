@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEE 206 - Thermodynamics I - Comprehensive CBT Examination</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .exam-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .exam-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .exam-header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .exam-header .course-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .exam-header .info-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Instructions Section */
+        .instructions {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .instructions h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .instructions ul {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .instructions .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            color: #856404;
+        }
+
+        /* Section Navigation */
+        .section-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .section-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .section-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .section-btn.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        /* Question Section */
+        .question-section {
+            display: none;
+        }
+
+        .question-section.active {
+            display: block;
+        }
+
+        .topic-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .question-card.correct {
+            border-color: #28a745;
+        }
+
+        .question-card.incorrect {
+            border-color: #dc3545;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .question-formula {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Options */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #f0f3ff;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .option.disabled {
+            pointer-events: none;
+        }
+
+        .option-letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .option.correct .option-letter {
+            background: #28a745;
+        }
+
+        .option.incorrect .option-letter {
+            background: #dc3545;
+        }
+
+        .option-text {
+            flex: 1;
+            color: #333;
+        }
+
+        /* Feedback Section */
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.correct {
+            display: block;
+            background: #d4edda;
+            border: 1px solid #28a745;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            display: block;
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            color: #721c24;
+        }
+
+        .feedback h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feedback-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Score Section */
+        .score-section {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.3);
+        }
+
+        .score-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .score-details {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 25px;
+            border-radius: 10px;
+        }
+
+        .score-item span {
+            display: block;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .score-item strong {
+            font-size: 1.5rem;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-btn.submit {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Footer */
+        .exam-footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .exam-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .exam-header .course-info {
+                gap: 15px;
+            }
+
+            .exam-header .info-item {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+
+            .instructions {
+                padding: 20px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 1rem;
+            }
+
+            .option {
+                padding: 12px 15px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            .score-details {
+                gap: 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-card {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .section-nav,
+            .nav-buttons,
+            .progress-bar,
+            .score-section {
+                display: none;
+            }
+
+            .question-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="exam-header">
+            <h1>MEE 206 - THERMODYNAMICS I</h1>
+            <div class="subtitle">COMPUTER-BASED TESTING (CBT) EXAMINATION</div>
+            <div class="course-info">
+                <div class="info-item">📚 Course Code: MEE 206</div>
+                <div class="info-item">⏱️ Duration: 90 Minutes</div>
+                <div class="info-item">📝 Total Questions: 50</div>
+                <div class="info-item">🎯 Total Marks: 100</div>
+            </div>
+        </header>
+
+        <!-- Instructions -->
+        <section class="instructions">
+            <h2>📋 EXAMINATION INSTRUCTIONS</h2>
+            <ul>
+                <li><strong>Attempt ALL questions.</strong> Each question carries 2 marks.</li>
+                <li><strong>Time Allocation:</strong> Approximately 1.8 minutes per question.</li>
+                <li><strong>Answer Format:</strong> Click on the correct option (A, B, C, or D) for each question.</li>
+                <li><strong>Immediate Feedback:</strong> Your answer will be marked immediately with correct/incorrect indication.</li>
+                <li><strong>Explanation:</strong> A brief explanation will be provided after each answer to enhance understanding.</li>
+                <li><strong>No Negative Marking:</strong> Incorrect answers do not carry penalty marks.</li>
+                <li><strong>Submission:</strong> Click "Submit Exam" after completing all questions.</li>
+            </ul>
+            <div class="warning">
+                ⚠️ <strong>Note:</strong> This is a formative assessment designed to test your understanding of thermodynamic principles. Pay attention to units, sign conventions, and fundamental definitions as taught in the lecture material.
+            </div>
+        </section>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <!-- Section Navigation -->
+        <nav class="section-nav">
+            <button class="section-btn active" onclick="showSection(0)">Section 1: Introduction & Basic Concepts</button>
+            <button class="section-btn" onclick="showSection(1)">Section 2: Systems & Boundaries</button>
+            <button class="section-btn" onclick="showSection(2)">Section 3: Properties of Systems</button>
+            <button class="section-btn" onclick="showSection(3)">Section 4: Pressure & Temperature</button>
+            <button class="section-btn" onclick="showSection(4)">Section 5: Laws of Thermodynamics</button>
+        </nav>
+
+        <!-- Question Container -->
+        <div id="questionsContainer"></div>
+
+        <!-- Score Section -->
+        <div class="score-section" id="scoreSection" style="display: none;">
+            <h3>🎉 EXAMINATION COMPLETED</h3>
+            <div class="score-display">
+                <span id="finalScore">0</span> / <span id="totalScore">100</span>
+            </div>
+            <div id="scoreMessage"></div>
+            <div class="score-details">
+                <div class="score-item">
+                    <span>Correct Answers</span>
+                    <strong id="correctCount">0</strong>
+                </div>
+                <div class="score-item">
+                    <span>Incorrect Answers</span>
+                    <strong id="incorrectCount">0</strong>
+                </div>
+                <div class="score-item">
+                    <span>Percentage</span>
+                    <strong id="percentage">0%</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons" id="navButtons">
+            <button class="nav-btn prev" id="prevBtn" onclick="prevSection()" disabled>← Previous Section</button>
+            <button class="nav-btn next" id="nextBtn" onclick="nextSection()">Next Section →</button>
+            <button class="nav-btn submit" id="submitBtn" onclick="submitExam()" style="display: none;">Submit Exam</button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="exam-footer">
+            <p>© 2025 Department of Mechanical Engineering | Federal University of Technology</p>
+            <p>Thermodynamics I - CBT Examination System</p>
+        </footer>
+    </div>
+
+    <script>
+        // Questions Data - Section 1: Introduction & Basic Concepts
+        const section1Questions = [
+            {
+                id: 1,
+                question: "The term 'Thermodynamics' is derived from which two Greek words?",
+                options: ["Thermo and dynamic", "Therme and dynamis", "Heat and power", "Thermal and dynamics"],
+                correct: 1,
+                explanation: "According to the lecture material, thermodynamics derives from the Greek words 'therme' (heat) and 'dynamis' (power). This etymology reflects the fundamental concern of the science with heat and energy transformations."
+            },
+            {
+                id: 2,
+                question: "Which of the following represents the CORRECT chronological development of thermodynamic principles?",
+                options: ["Joule → Carnot → Clausius → Kelvin → Nernst", "Carnot → Joule → Clausius → Kelvin → Nernst", "Kelvin → Clausius → Carnot → Joule → Nernst", "Clausius → Joule → Carnot → Kelvin → Nernst"],
+                correct: 1,
+                explanation: "The historical development sequence is: 1824 (Carnot - heat engines), 1840s (Joule - mechanical equivalent of heat), 1850 (Clausius - First Law), 1851 (Kelvin - Second Law and absolute temperature), 1906 (Nernst - Third Law)."
+            },
+            {
+                id: 3,
+                question: "The mechanical equivalent of heat established by James Joule is:",
+                options: ["4.186 J/cal", "4.186 cal/J", "418.6 J/cal", "1 J/cal"],
+                correct: 0,
+                explanation: "As stated in the lecture material, James Joule established the mechanical equivalent of heat as 4.186 J/cal. This fundamental constant relates energy in joules to thermal energy in calories."
+            },
+            {
+                id: 4,
+                question: "Engineering Thermodynamics primarily focuses on which of the following?",
+                options: ["Molecular structure analysis", "Bulk behavior and practical applications in engineering systems", "Chemical reaction mechanisms", "Biological metabolic processes"],
+                correct: 1,
+                explanation: "Engineering Thermodynamics focuses on practical applications including power generation (steam cycles, gas turbines), refrigeration systems, internal combustion engines, and propulsion systems - the bulk behavior of matter without molecular-level analysis."
+            },
+            {
+                id: 5,
+                question: "Which approach to thermodynamics deals with molecular behavior and relates it to macroscopic properties?",
+                options: ["Classical Thermodynamics", "Statistical Thermodynamics", "Engineering Thermodynamics", "Chemical Thermodynamics"],
+                correct: 1,
+                explanation: "Statistical Thermodynamics is the microscopic approach that relates molecular behavior to macroscopic properties. Classical Thermodynamics takes a macroscopic approach dealing with bulk properties without considering molecular structure."
+            },
+            {
+                id: 6,
+                question: "The fundamental laws of thermodynamics are based on:",
+                options: ["Mathematical proofs", "Theoretical derivations", "Experimental observations", "Molecular simulations"],
+                correct: 2,
+                explanation: "As stated in the material, the four fundamental laws of thermodynamics are based on experimental observations and cannot be proven mathematically. They form the foundation for understanding energy conservation, process direction, and efficiency limitations."
+            },
+            {
+                id: 7,
+                question: "Chemical Thermodynamics deals with which of the following?",
+                options: ["Power plant efficiency optimization", "Phase equilibria and reaction spontaneity", "Jet engine thrust optimization", "Steam cycle analysis"],
+                correct: 1,
+                explanation: "Chemical Thermodynamics deals with chemical equilibrium and reaction spontaneity, phase equilibria and critical phenomena, electrochemical processes, and biochemical systems - distinct from engineering applications focused on power generation."
+            },
+            {
+                id: 8,
+                question: "Who introduced the concept of entropy and the mathematical formulation of the Second Law?",
+                options: ["Lord Kelvin", "James Joule", "Rudolf Clausius", "Josiah Willard Gibbs"],
+                correct: 2,
+                explanation: "Rudolf Clausius introduced the entropy concept in 1865 and provided the mathematical formulation of the Second Law of Thermodynamics. Lord Kelvin formulated the Second Law in 1851 and established the absolute temperature scale."
+            }
+        ];
+
+        // Questions Data - Section 2: Systems & Boundaries
+        const section2Questions = [
+            {
+                id: 9,
+                question: "A closed system is defined as a system where:",
+                options: ["Both mass and energy can cross the boundary", "No mass or energy crosses the boundary", "Mass is constant but energy can transfer", "Energy is constant but mass can transfer"],
+                correct: 2,
+                explanation: "As defined in the material, a closed system (control mass) has fixed mass with no mass crossing the boundary, but energy (heat and work) can be transferred across the boundary. Mathematically: dm/dt = 0, but dE/dt = Q̇ - Ẇ."
+            },
+            {
+                id: 10,
+                question: "Which of the following is an example of a CLOSED system?",
+                options: ["Steam turbine", "Heat exchanger", "Piston-cylinder assembly with gas", "Centrifugal pump"],
+                correct: 2,
+                explanation: "A piston-cylinder assembly with gas is a closed system because the mass of gas remains fixed within the cylinder while the movable boundary allows work transfer through piston movement. The other options (turbine, heat exchanger, pump) are open systems with continuous mass flow."
+            },
+            {
+                id: 11,
+                question: "For an isolated system, the mathematical representation is:",
+                options: ["dm/dt = 0, dE/dt = Q̇ - Ẇ", "dm/dt = ṁin - ṁout, dE/dt = 0", "dm/dt = 0, dE/dt = 0", "dm/dt = ṁin - ṁout, dE/dt = Q̇ - Ẇ"],
+                correct: 2,
+                explanation: "An isolated system has no mass or energy crossing its boundary, so both mass and energy remain constant. The material states: dm/dt = 0 and dE/dt = 0. This represents the ultimate idealization where the universe as a whole is considered isolated."
+            },
+            {
+                id: 12,
+                question: "In an open system (control volume), the general energy equation includes the term 'flow work' represented by:",
+                options: ["ṁh (mass flow rate × enthalpy)", "ṁu (mass flow rate × internal energy)", "ṁv (mass flow rate × specific volume)", "ṁP (mass flow rate × pressure)"],
+                correct: 0,
+                explanation: "For open systems, flow work is included in enthalpy (h = u + Pv). The general energy equation is: dE/dt = Q̇ - Ẇ + ṁinhin - ṁouthout. Enthalpy represents the total energy including flow work associated with fluid crossing the boundary."
+            },
+            {
+                id: 13,
+                question: "A thermos bottle (idealized) is an example of which type of system?",
+                options: ["Open system", "Closed system", "Isolated system", "Adiabatic system"],
+                correct: 2,
+                explanation: "An idealized thermos bottle approaches an isolated system because its double-walled vacuum construction minimizes heat transfer by conduction, convection, and radiation, with no mass or energy transfer across boundaries in the ideal case."
+            },
+            {
+                id: 14,
+                question: "The selection of system boundaries should primarily be based on:",
+                options: ["Convenience and clarity of energy/mass transfers", "The size of the system", "The cost of measurement", "The location of the laboratory"],
+                correct: 0,
+                explanation: "According to the material, boundary selection criteria include: (1) Convenience - should simplify analysis, (2) Clarity - energy and mass transfers should be clearly identifiable, (3) Purpose - should serve analysis objectives, (4) Practicality - should be measurable or calculable."
+            },
+            {
+                id: 15,
+                question: "Which type of boundary allows mass transfer across it and is used in open system analysis?",
+                options: ["Fixed boundary", "Movable boundary", "Permeable boundary", "Impermeable boundary"],
+                correct: 2,
+                explanation: "A permeable boundary allows mass transfer across the boundary and is used in open system analysis. Mass flow rate depends on pressure difference. Pipe inlets/outlets and valve openings are examples. Impermeable boundaries are used for closed systems."
+            },
+            {
+                id: 16,
+                question: "A steam turbine is classified as an open system because:",
+                options: ["It produces work output", "Mass flows through fixed boundaries continuously", "It operates at steady state", "Heat transfer occurs across boundaries"],
+                correct: 1,
+                explanation: "A steam turbine is an open system (control volume) because high-pressure steam enters and low-pressure steam exits through fixed boundaries, with continuous mass flow. The control volume is fixed in space while mass crosses the control surface."
+            },
+            {
+                id: 17,
+                question: "The surroundings are defined as:",
+                options: ["Everything external to the system boundary", "The environment outside the laboratory", "The isolated system components", "The vacuum surrounding the system"],
+                correct: 0,
+                explanation: "According to the material, surroundings are everything external to the system boundary that can potentially interact with the system. They provide the reference for energy transfer and can be a source/sink for heat transfer and work."
+            }
+        ];
+
+        // Questions Data - Section 3: Properties of Systems
+        const section3Questions = [
+            {
+                id: 18,
+                question: "A property is defined as any characteristic of a system that:",
+                options: ["Can only be measured directly", "Has a definite value when the system is in a given state", "Depends on the path taken to reach the state", "Changes with the process direction"],
+                correct: 1,
+                explanation: "A property is any characteristic of a system that can be measured or calculated and has a definite value when the system is in a given state. Properties are point functions whose values depend only on the state, not on the path taken."
+            },
+            {
+                id: 19,
+                question: "Which of the following is an INTENSIVE property?",
+                options: ["Mass", "Volume", "Internal Energy", "Temperature"],
+                correct: 3,
+                explanation: "Temperature is an intensive property because it is independent of mass or size. The other options (mass, volume, internal energy) are extensive properties that depend on the mass of the system. Intensive properties remain unchanged when the system is divided into parts."
+            },
+            {
+                id: 20,
+                question: "The relationship between extensive and intensive properties is best described as:",
+                options: ["Extensive = Intensive × Volume", "Extensive = Intensive × Pressure", "Extensive = Intensive × Mass", "Extensive = Intensive × Temperature"],
+                correct: 2,
+                explanation: "General relationship: Extensive Property = Intensive Property × Mass. Examples from the material: V = v × m, U = u × m, H = h × m, S = s × m. Specific properties (intensive) are obtained by dividing extensive properties by mass."
+            },
+            {
+                id: 21,
+                question: "Specific enthalpy (h) is defined as:",
+                options: ["h = u + Pv", "h = U + PV", "h = s × T", "h = m × u"],
+                correct: 0,
+                explanation: "Specific enthalpy (per unit mass) is defined as h = u + Pv, where u is specific internal energy, P is pressure, and v is specific volume. This represents the flow energy per unit mass and is widely used in open system analysis and steam tables."
+            },
+            {
+                id: 22,
+                question: "Entropy is a measure of:",
+                options: ["Thermal energy content", "System disorder or energy distribution", "Internal kinetic energy", "Flow work capability"],
+                correct: 1,
+                explanation: "Entropy is defined as a measure of molecular disorder or energy distribution among molecules. The statistical interpretation is S = k ln Ω (Boltzmann equation). Applications include Second Law analysis and process direction assessment."
+            },
+            {
+                id: 23,
+                question: "For a simple compressible system, how many independent intensive properties are needed to completely determine the state?",
+                options: ["One", "Two", "Three", "Four"],
+                correct: 1,
+                explanation: "For simple compressible systems, two independent intensive properties determine the state (Two-Property Rule). All other properties become dependent once the state is fixed. This is known as the state postulate."
+            },
+            {
+                id: 24,
+                question: "Mechanical equilibrium requires:",
+                options: ["Uniform temperature throughout", "Uniform pressure throughout", "No chemical reactions occurring", "No mass transfer between phases"],
+                correct: 1,
+                explanation: "Mechanical equilibrium requires uniform pressure throughout the system (for systems without external forces), expressed as ∂P/∂x = 0. Thermal equilibrium requires uniform temperature, chemical equilibrium requires no net reactions, and phase equilibrium requires no net mass transfer between phases."
+            },
+            {
+                id: 25,
+                question: "A quasi-equilibrium process is one where:",
+                options: ["The system passes through a series of equilibrium states", "The process occurs at infinite speed", "No heat transfer is involved", "Pressure remains constant throughout"],
+                correct: 0,
+                explanation: "A quasi-equilibrium process is conducted slowly enough that the system passes through a series of equilibrium states. Properties can be defined at each instant, and reversible processes are quasi-equilibrium. This is a theoretical idealization for analysis purposes."
+            },
+            {
+                id: 26,
+                question: "Which of the following is an EXTENSIVE property?",
+                options: ["Density", "Specific volume", "Pressure", "Enthalpy"],
+                correct: 3,
+                explanation: "Enthalpy (H) is an extensive property because it depends on the mass of the system. The intensive form is specific enthalpy (h = H/m). Density, specific volume, and pressure are all intensive properties independent of system size."
+            },
+            {
+                id: 27,
+                question: "Phase equilibrium occurs when:",
+                options: ["Temperature is uniform throughout", "Pressure is uniform throughout", "Chemical potential is equal in all phases", "No heat transfer occurs between phases"],
+                correct: 2,
+                explanation: "Phase equilibrium occurs when there is no net mass transfer between phases, which requires that the chemical potential be equal in all phases for each component. Applications include boiling, condensation, and sublimation processes."
+            }
+        ];
+
+        // Questions Data - Section 4: Pressure & Temperature
+        const section3QuestionsTemp = section3Questions; // Renaming for clarity
+
+        const section4Questions = [
+            {
+                id: 28,
+                question: "Absolute pressure is measured relative to:",
+                options: ["Local atmospheric pressure", "Standard atmospheric pressure", "Perfect vacuum", "Gauge pressure reference"],
+                correct: 2,
+                explanation: "Absolute pressure is measured relative to perfect vacuum (zero absolute pressure, complete absence of matter). It is always positive and used in all thermodynamic calculations. Gauge pressure, in contrast, is measured relative to atmospheric pressure."
+            },
+            {
+                id: 29,
+                question: "The relationship between absolute pressure, gauge pressure, and atmospheric pressure is:",
+                options: ["Pabs = Pg + Patm", "Pabs = Pg - Patm", "Pabs = Patm - Pg", "Pabs = Pg × Patm"],
+                correct: 0,
+                explanation: "The primary relationship is Pabs = Pg + Patm (when Pg > 0, i.e., pressure above atmospheric). When pressure is below atmospheric (vacuum), Pabs = Patm - Pvac. This relationship is fundamental for all pressure measurements in thermodynamics."
+            },
+            {
+                id: 30,
+                question: "Standard atmospheric pressure is equal to:",
+                options: ["100 kPa", "101.325 kPa", "200 kPa", "760 mmHg"],
+                correct: 1,
+                explanation: "Standard atmospheric pressure is 101.325 kPa, which equals 1 atm, 760 mmHg, or approximately 1.01325 bar. This value is used as the reference for gauge pressure measurements and varies with altitude and weather conditions."
+            },
+            {
+                id: 31,
+                question: "The temperature at which molecular motion theoretically ceases is called:",
+                options: ["Absolute zero", "Triple point", "Critical temperature", "Ice point"],
+                correct: 0,
+                explanation: "Absolute zero (0 K or 0°R) is the temperature at which molecular motion theoretically ceases. At this temperature, the average kinetic energy of molecules is zero. It is the lower limit of the thermodynamic temperature scale."
+            },
+            {
+                id: 32,
+                question: "The conversion from Celsius to Kelvin is given by:",
+                options: ["K = °C - 273.15", "K = °C + 273.15", "K = °C × 273.15", "K = °C / 273.15"],
+                correct: 1,
+                explanation: "The Kelvin scale uses the same degree size as Celsius but starts from absolute zero. Therefore, K = °C + 273.15. For example, 0°C = 273.15 K. The Rankine scale uses Fahrenheit degree size: °R = °F + 459.67."
+            },
+            {
+                id: 33,
+                question: "Temperature difference conversion follows which rule?",
+                options: ["ΔT(K) = ΔT(°C) × 1.8", "ΔT(K) = ΔT(°R)", "ΔT(°C) = ΔT(K)", "ΔT(°F) = ΔT(K)"],
+                correct: 2,
+                explanation: "Temperature differences have the same magnitude in Celsius and Kelvin scales: ΔT(K) = ΔT(°C). Similarly, ΔT(°R) = ΔT(°F). However, when converting between absolute scales: ΔT(°R) = 1.8 × ΔT(K) and ΔT(°F) = 1.8 × ΔT(°C)."
+            },
+            {
+                id: 34,
+                question: "A pressure gauge on a boiler reads 8 bar gauge. If atmospheric pressure is 101.3 kPa, what is the absolute pressure in kPa?",
+                options: ["901.3 kPa", "801.3 kPa", "1101.3 kPa", "1901.3 kPa"],
+                correct: 0,
+                explanation: "First convert gauge pressure to consistent units: 8 bar = 800 kPa. Then apply the relationship: Pabs = Pg + Patm = 800 + 101.3 = 901.3 kPa. Remember that 1 bar = 100 kPa, so 8 bar = 800 kPa gauge pressure."
+            },
+            {
+                id: 35,
+                question: "The temperature 100°C is equivalent to:",
+                options: ["212°F, 373.15 K, 671.67°R", "212°F, 273.15 K, 373.15°R", "32°F, 373.15 K, 671.67°R", "180°F, 373.15 K, 671.67°R"],
+                correct: 0,
+                explanation: "Using conversion formulas: °F = (9/5)°C + 32 = (9/5)(100) + 32 = 212°F; K = °C + 273.15 = 100 + 273.15 = 373.15 K; °R = °F + 459.67 = 212 + 459.67 = 671.67°R. This is the boiling point of water at 1 atm."
+            },
+            {
+                id: 36,
+                question: "Which temperature scale is based on the Carnot efficiency and ideal gas behavior?",
+                options: ["Celsius scale", "Fahrenheit scale", "Kelvin scale", "Rankine scale"],
+                correct: 2,
+                explanation: "The Kelvin scale is an absolute temperature scale based on Carnot efficiency and ideal gas behavior. Its theoretical basis comes from the relationship that the maximum efficiency of a heat engine depends only on the ratio of reservoir temperatures in absolute scale."
+            },
+            {
+                id: 37,
+                question: "Pressure is defined as:",
+                options: ["Force per unit mass", "Force per unit volume", "Normal force per unit area", "Weight per unit area"],
+                correct: 2,
+                explanation: "Pressure is the normal force exerted by a fluid per unit area, mathematically P = F/A. It arises from molecular collisions with surfaces. The molecular interpretation is the average momentum change per collision × collision frequency per unit area."
+            },
+            {
+                id: 38,
+                question: "A vacuum gauge reading of 50 kPa when atmospheric pressure is 101.3 kPa indicates an absolute pressure of:",
+                options: ["151.3 kPa", "50 kPa", "51.3 kPa", "101.3 kPa"],
+                correct: 2,
+                explanation: "When pressure is below atmospheric (vacuum), Pabs = Patm - Pvac = 101.3 - 50 = 51.3 kPa. Vacuum pressure represents how much below atmospheric the pressure is, so the absolute pressure is the difference between atmospheric and vacuum readings."
+            }
+        ];
+
+        // Questions Data - Section 5: Laws of Thermodynamics
+        const section5Questions = [
+            {
+                id: 39,
+                question: "The Zeroth Law of Thermodynamics establishes which fundamental concept?",
+                options: ["Energy conservation", "Entropy increase", "Temperature as a state property", "Heat engine efficiency limits"],
+                correct: 2,
+                explanation: "The Zeroth Law establishes temperature as a state property and provides the logical foundation for temperature measurement. It states that if two bodies are in thermal equilibrium with a third body, they are in thermal equilibrium with each other, making temperature the determining property."
+            },
+            {
+                id: 40,
+                question: "The First Law of Thermodynamics for a closed system is mathematically expressed as:",
+                options: ["ΔU = Q × W", "ΔU = Q + W", "ΔU = Q - W", "ΔU = W - Q"],
+                correct: 2,
+                explanation: "The First Law for closed systems states that the change in internal energy equals heat added to the system minus work done by the system: ΔU = Q - W. The sign convention is: Q positive when added to system, W positive when done by system."
+            },
+            {
+                id: 41,
+                question: "According to the Second Law of Thermodynamics (Kelvin-Planck statement), it is impossible to:",
+                options: ["Convert heat completely to work in a cycle", "Create a perpetual motion machine", "Transfer heat from cold to hot body", "Have 100% efficiency in any heat engine"],
+                correct: 0,
+                explanation: "The Kelvin-Planck statement declares it impossible to construct a heat engine that operates in a cycle and produces no effect other than extracting heat from a reservoir and performing an equal amount of work. This means 100% thermal efficiency is impossible."
+            },
+            {
+                id: 42,
+                question: "The Third Law of Thermodynamics states that:",
+                options: ["Energy is conserved in all processes", "Entropy of an isolated system never decreases", "The entropy of a perfect crystal approaches zero at absolute zero", "Heat cannot flow from cold to hot body spontaneously"],
+                correct: 2,
+                explanation: "The Third Law states that the entropy of a perfect crystal approaches zero as temperature approaches absolute zero: lim(T→0) S = 0. This provides an absolute reference point for entropy calculations and is based on quantum mechanical principles."
+            },
+            {
+                id: 43,
+                question: "The Clausius inequality for the Second Law is mathematically stated as:",
+                options: ["∮(dQ/T) ≥ 0", "∮(dQ/T) ≤ 0", "∮(dQ/T) = 0", "∮(dQ/T) = 1"],
+                correct: 1,
+                explanation: "The Clausius inequality states that ∮(δQ/T) ≤ 0 for any cycle. For reversible processes, equality holds: ∮(δQ/T) = 0. For irreversible processes, the integral is negative. This mathematical formulation is fundamental to Second Law analysis."
+            },
+            {
+                id: 44,
+                question: "A process where the system and surroundings can be restored to their original states is called:",
+                options: ["Quasi-static process", "Reversible process", "Irreversible process", "Isothermal process"],
+                correct: 1,
+                explanation: "A reversible process can be reversed without leaving any change in the system or surroundings. Characteristics include quasi-static behavior, frictionless operation, and no finite temperature differences. Entropy change of an isolated system in a reversible process is zero."
+            },
+            {
+                id: 45,
+                question: "Heat is defined as:",
+                options: ["Energy transfer due to temperature difference", "Energy stored in the system", "Energy due to molecular motion", "Work done by the system"],
+                correct: 0,
+                explanation: "Heat is energy transfer due to temperature difference between the system and surroundings. It is a path function (inexact differential, δQ) and not a property. The three mechanisms are conduction, convection, and radiation. Heat is positive when added to the system."
+            },
+            {
+                id: 46,
+                question: "Internal energy (U) of a system includes:",
+                options: ["Only kinetic energy of the system", "Only potential energy of the system", "Kinetic energy + potential energy + chemical energy of all molecules", "Only flow energy"],
+                correct: 2,
+                explanation: "Internal energy is the total microscopic energy of the system, including kinetic energy (translational, rotational, vibrational), potential energy (intermolecular forces), and chemical/nuclear energy of molecules. It is an extensive property and state function."
+            },
+            {
+                id: 47,
+                question: "For an isolated system, the Second Law states that:",
+                options: ["Energy is conserved", "Entropy can never decrease", "Temperature remains constant", "Pressure remains constant"],
+                correct: 1,
+                explanation: "The entropy statement of the Second Law declares that the entropy of an isolated system can never decrease; it can only increase (for irreversible processes) or remain constant (for reversible processes). This determines process feasibility and direction."
+            },
+            {
+                id: 48,
+                question: "The maximum theoretical thermal efficiency of a heat engine depends on:",
+                options: ["The working fluid used", "The construction materials", "The temperatures of the hot and cold reservoirs", "The engine size"],
+                correct: 2,
+                explanation: "The Carnot efficiency (maximum theoretical efficiency) depends only on the reservoir temperatures: η = 1 - Tcold/Thot. This is a fundamental limitation established by the Second Law. Neither the working fluid, materials, nor engine size affect this theoretical maximum."
+            },
+            {
+                id: 49,
+                question: "Work is defined as:",
+                options: ["Energy transfer due to temperature difference", "Energy transfer due to force acting through distance", "Energy stored as heat", "Energy due to pressure difference"],
+                correct: 1,
+                explanation: "Work is energy transfer due to force acting through distance. It is a path function with inexact differential (δW). Sign convention: positive when done BY the system. Types include boundary work, shaft work, electrical work, and flow work."
+            },
+            {
+                id: 50,
+                question: "When 2 kg of water at 80°C is mixed with 3 kg of water at 20°C in an insulated container, the process is:",
+                options: ["Reversible because the container is insulated", "Irreversible because heat transfer occurs across finite temperature difference", "Reversible because entropy remains constant", "Irreversible because mass is transferred between systems"],
+                correct: 1,
+                explanation: "The process is irreversible despite the insulation because heat transfer occurs across a finite temperature difference (between 80°C and 20°C water). For a truly isolated system undergoing an irreversible process, total entropy increases: ΔStotal > 0."
+            }
+        ];
+
+        // Combine all sections
+        const allSections = [section1Questions, section2Questions, section3Questions, section4Questions, section5Questions];
+        const sectionNames = ["Introduction & Basic Concepts", "Systems & Boundaries", "Properties of Systems", "Pressure & Temperature", "Laws of Thermodynamics"];
+
+        // State management
+        let currentSection = 0;
+        let userAnswers = {};
+        let answeredCount = 0;
+
+        // Initialize the exam
+        function initExam() {
+            renderQuestions();
+            updateProgress();
+        }
+
+        // Render questions for current section
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            const questions = allSections[currentSection];
+            
+            let html = `
+                <div class="question-section active" id="section${currentSection}">
+                    <div class="topic-header">
+                        <h2>Section ${currentSection + 1}: ${sectionNames[currentSection]}</h2>
+                        <p>Questions ${questions[0].id} - ${questions[questions.length - 1].id} | ${questions.length} Questions</p>
+                    </div>
+            `;
+
+            questions.forEach((q, index) => {
+                const isAnswered = userAnswers[q.id] !== undefined;
+                const userAnswer = userAnswers[q.id];
+                const isCorrect = userAnswer === q.correct;
+
+                html += `
+                    <div class="question-card ${isAnswered ? (isCorrect ? 'correct' : 'incorrect') : ''}" id="card${q.id}">
+                        <span class="question-number">Question ${index + 1} of ${questions.length} (Marks: 2)</span>
+                        <div class="question-text">${q.question}</div>
+                        <div class="options-container" id="options${q.id}">
+                `;
+
+                q.options.forEach((option, optIndex) => {
+                    let optionClass = 'option';
+                    if (isAnswered) {
+                        if (optIndex === q.correct) {
+                            optionClass += ' correct';
+                        } else if (optIndex === userAnswer) {
+                            optionClass += ' incorrect';
+                        }
+                        optionClass += ' disabled';
+                    } else if (userAnswer === optIndex) {
+                        optionClass += ' selected';
+                    }
+
+                    html += `
+                        <div class="${optionClass}" onclick="selectAnswer(${q.id}, ${optIndex})">
+                            <span class="option-letter">${String.fromCharCode(65 + optIndex)}</span>
+                            <span class="option-text">${option}</span>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div class="feedback ${isAnswered ? (isCorrect ? 'correct' : 'incorrect') : ''}" id="feedback${q.id}">
+                            <h4>
+                                <span class="feedback-icon">${isCorrect ? '✓' : '✗'}</span>
+                                ${isCorrect ? 'CORRECT' : 'WRONG'}
+                            </h4>
+                            <p>${q.explanation}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // Select answer
+        function selectAnswer(questionId, optionIndex) {
+            if (userAnswers[questionId] !== undefined) return;
+
+            const questions = allSections.flat();
+            const question = questions.find(q => q.id === questionId);
+            
+            userAnswers[questionId] = optionIndex;
+            answeredCount++;
+
+            // Update UI
+            const card = document.getElementById(`card${questionId}`);
+            card.classList.remove('correct', 'incorrect');
+            card.classList.add(optionIndex === question.correct ? 'correct' : 'incorrect');
+
+            // Update options
+            const optionsContainer = document.getElementById(`options${questionId}`);
+            const options = optionsContainer.querySelectorAll('.option');
+            options.forEach((opt, idx) => {
+                opt.classList.add('disabled');
+                opt.classList.remove('selected');
+                if (idx === question.correct) {
+                    opt.classList.add('correct');
+                } else if (idx === optionIndex && optionIndex !== question.correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            // Show feedback
+            const feedback = document.getElementById(`feedback${questionId}`);
+            feedback.classList.remove('correct', 'incorrect');
+            feedback.classList.add(optionIndex === question.correct ? 'correct' : 'incorrect');
+            feedback.querySelector('h4').innerHTML = `
+                <span class="feedback-icon">${optionIndex === question.correct ? '✓' : '✗'}</span>
+                ${optionIndex === question.correct ? 'CORRECT' : 'WRONG'}
+            `;
+
+            updateProgress();
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const totalQuestions = allSections.flat().length;
+            const percentage = (answeredCount / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+        }
+
+        // Navigation functions
+        function showSection(sectionIndex) {
+            currentSection = sectionIndex;
+            renderQuestions();
+            updateNavigation();
+            updateSectionButtons();
+        }
+
+        function nextSection() {
+            if (currentSection < allSections.length - 1) {
+                currentSection++;
+                showSection(currentSection);
+            }
+        }
+
+        function prevSection() {
+            if (currentSection > 0) {
+                currentSection--;
+                showSection(currentSection);
+            }
+        }
+
+        function updateNavigation() {
+            document.getElementById('prevBtn').disabled = currentSection === 0;
+            
+            if (currentSection === allSections.length - 1) {
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('submitBtn').style.display = 'block';
+            } else {
+                document.getElementById('nextBtn').style.display = 'block';
+                document.getElementById('submitBtn').style.display = 'none';
+            }
+        }
+
+        function updateSectionButtons() {
+            const buttons = document.querySelectorAll('.section-btn');
+            buttons.forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === currentSection);
+            });
+        }
+
+        // Submit exam
+        function submitExam() {
+            const totalQuestions = allSections.flat().length;
+            let correct = 0;
+            let incorrect = 0;
+            const questions = allSections.flat();
+
+            questions.forEach(q => {
+                if (userAnswers[q.id] === q.correct) {
+                    correct++;
+                } else {
+                    incorrect++;
+                }
+            });
+
+            const score = correct * 2;
+            const percentage = (correct / totalQuestions) * 100;
+
+            // Hide questions
+            document.querySelectorAll('.question-section').forEach(s => s.style.display = 'none');
+            document.querySelector('.section-nav').style.display = 'none';
+            document.querySelector('.nav-buttons').style.display = 'none';
+
+            // Show score
+            document.getElementById('scoreSection').style.display = 'block';
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('totalScore').textContent = totalQuestions * 2;
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('incorrectCount').textContent = incorrect;
+            document.getElementById('percentage').textContent = `${percentage.toFixed(1)}%`;
+
+            // Score message
+            let message = '';
+            if (percentage >= 80) {
+                message = '🎓 Excellent! Outstanding performance. You have demonstrated excellent understanding of thermodynamic principles.';
+            } else if (percentage >= 60) {
+                message = '👍 Good Work! You have a solid understanding but there is room for improvement in some areas.';
+            } else if (percentage >= 40) {
+                message = '📚 Satisfactory. Review the material and focus on areas where you made mistakes.';
+            } else {
+                message = '⚠️ Needs Improvement. Please review the lecture material thoroughly and attempt the exercise again.';
+            }
+            document.getElementById('scoreMessage').textContent = message;
+
+            // Update progress bar
+            document.getElementById('progressFill').style.width = '100%';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initExam);
+    </script>
+</body>
+</html>
